@@ -1,0 +1,13 @@
+stages: 
+    - 'Publicação'
+'Gerar imagem':
+  stage: 'Publicação'
+  image: docker:stable
+  variables:
+    DOCKER_HOST: tcp://10.10.110.158:2375
+  script:
+    - docker build -t cezaraf/gitlab-approvers-check:$CI_COMMIT_TAG -t cezaraf/gitlab-approvers-check:latest .
+    - docker push cezaraf/gitlab-approvers-check:$CI_COMMIT_TAG
+    - docker push cezaraf/gitlab-approvers-check:latest
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^0\.(\d+)\.(\d+)$/
