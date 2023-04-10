@@ -146,7 +146,7 @@ func main() {
 
 					mandatoryUserId, _ := strconv.Atoi(idApprovalRequired)
 
-					if approval.User.Id == mandatoryUserId {
+					if approval.User.Id == mandatoryUserId && mergeRequestChanges.Author.Id != approval.User.Id {
 
 						mandatoryUserApproved = true
 					}
@@ -155,15 +155,18 @@ func main() {
 
 			if !mandatoryUserApproved {
 
-				fmt.Println(Red("É necessário a aprovação dos seguintes usuários: "))
+				fmt.Println(Red("É necessário a aprovação de um dos seguintes usuários: "))
 
 				for _, idApprovalRequired := range idsUserApprovals {
 
 					mandatoryUserId, _ := strconv.Atoi(idApprovalRequired)
 
-					user, _ := gitlab.GetUser(gitlabAccessConfig, mandatoryUserId)
+					if mandatoryUserId != mergeRequestChanges.Author.Id {
 
-					fmt.Println(Red(fmt.Sprintf("* %s", user.Name)))
+						user, _ := gitlab.GetUser(gitlabAccessConfig, mandatoryUserId)
+
+						fmt.Println(Red(fmt.Sprintf("* %s", user.Name)))
+					}
 				}
 
 				os.Exit(1)

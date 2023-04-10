@@ -14,7 +14,7 @@ var httpClient = http.Client{Transport: &http.Transport{
 }}
 
 type MergeRequestAuthor struct {
-	Id   int8   `json:"id"`
+	Id   int    `json:"id"`
 	Name string `json:"name"`
 }
 
