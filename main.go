@@ -146,7 +146,7 @@ func main() {
 
 					mandatoryUserId, _ := strconv.Atoi(idApprovalRequired)
 
-					if approval.User.Id == mandatoryUserId && mergeRequestChanges.Author.Id != approval.User.Id {
+					if mandatoryUserId > 0 && approval.User.Id == mandatoryUserId && mergeRequestChanges.Author.Id != approval.User.Id {
 
 						mandatoryUserApproved = true
 					}
@@ -161,7 +161,7 @@ func main() {
 
 					mandatoryUserId, _ := strconv.Atoi(idApprovalRequired)
 
-					if mandatoryUserId != mergeRequestChanges.Author.Id {
+					if mandatoryUserId > 0 && mandatoryUserId != mergeRequestChanges.Author.Id {
 
 						user, _ := gitlab.GetUser(gitlabAccessConfig, mandatoryUserId)
 
